@@ -1,9 +1,12 @@
 const express = require("express");
 const cors = require("cors"); // 1. Import it
+const path = require("node:path");
 const app = express();
 
 app.use(cors()); // 2. Enable it for all origins
 app.use(express.json());
+
+app.use(express.static(path.join(__dirname,"dist")));
 
 const container = [
     {id:1, title:"Container A", color:"#FF5733", content:"Data from server 1"},
