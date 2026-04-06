@@ -5,7 +5,6 @@ WORKDIR /app
 COPY frontend/vite-project ./
 
 RUN npm install
-RUN npm run build
 
 FROM node:18-alpine 
 WORKDIR /app
