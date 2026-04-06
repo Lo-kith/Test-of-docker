@@ -1,20 +1,20 @@
-# --- Stage 1: Build the Frontend ---
 FROM node:18-alpine AS builder 
-WORKDIR /app/frontend/vite-project
-COPY frontend/package*.json ./
-RUN npm install
-COPY frontend/vite-project ./
-RUN npm run build
 
-# --- Stage 2: Run the Backend ---
+WORKDIR /app
+
+COPY frontend/ ./
+
+RUN if [ -d "vite-project" ]; then cd vite-project && npm install && npm run build && mv dist /app/dist; \
+    else npm install && npm run build; fi
+
 FROM node:18-alpine 
 WORKDIR /app
+
 COPY package*.json ./
 RUN npm install
 COPY server.js ./
 
-# This line must match the "AS builder" from Stage 1
-COPY --from=builder /app/frontend/dist ./dist
+COPY --from=builder /app/dist ./dist
 
 EXPOSE 3000
 CMD ["node", "server.js"]
