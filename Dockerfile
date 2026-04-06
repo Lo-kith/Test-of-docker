@@ -1,4 +1,4 @@
-FROM node:18 
+FROM alpine:latest
     WORKDIR /app
     
     COPY package*.json ./
