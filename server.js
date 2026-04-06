@@ -2,6 +2,9 @@ const express=require("express");
 const app=express();
 const mongoose=require("mongoose");
 const { title } = require("node:process");
+const cors=require("cors");
+
+app.use(cors());
 
 app.get("/get",(req,res)=>{
     res.send("Hello World");
@@ -15,7 +18,7 @@ const container=[
     {id:5,title:"Container E",color:"#FF33A8",content:"Data from server 5"},
 ]
 app.get("/container",(req,res)=>{
-    res.json(container);
+    res.json(container)
 })
 const PORT=3000;
 app.listen(PORT,()=>{
