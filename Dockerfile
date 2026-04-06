@@ -13,7 +13,6 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY server.js ./
-
 COPY --from=builder /app/dist ./dist
 
 EXPOSE 3000
