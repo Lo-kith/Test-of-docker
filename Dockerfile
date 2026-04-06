@@ -2,10 +2,10 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-COPY frontend/ ./
+COPY frontend/vite-project ./
 
-RUN if [ -d "vite-project" ]; then cd vite-project && npm install && npm run build && mv dist /app/dist; \
-    else npm install && npm run build; fi
+RUN npm install
+RUN npm run build
 
 FROM node:18-alpine 
 WORKDIR /app
