@@ -1,9 +1,9 @@
 # --- Stage 1: Build the Frontend ---
 FROM node:18-alpine AS builder 
-WORKDIR /app/frontend
+WORKDIR /app/frontend/vite-project
 COPY frontend/package*.json ./
 RUN npm install
-COPY frontend/ ./
+COPY frontend/vite-project ./
 RUN npm run build
 
 # --- Stage 2: Run the Backend ---
