@@ -1,44 +1,44 @@
-import React from 'react'
-import { useEffect } from 'react';
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react';
 
 export default function App() {
+  const [items, setItems] = useState([]); // Use plural 'items' for clarity
+  const [loading, setLoading] = useState(true);
 
-  const [item,setItem]=useState([]);
-  const [loading,setLoading]=useState(true);
+  useEffect(() => {
+    // Added /container to the URL
+    fetch("http://localhost:3000/container")
+      .then(res => res.json())
+      .then(data => {
+        setItems(data);
+        setLoading(false);
+      })
+      .catch(err => console.log("Error fetching", err));
+  }, []);
 
-  useEffect(()=>{
-fetch("http://localhost:3000")
-.then(res=>res.json())
-.then(data=>{
-  setItem(data);
-  setLoading(false);
-})
-.catch(err=>console.log("Error fetching",err))
+  // Moved outside useEffect so the button can access it
+  const moveToEnd = (id) => {
+    const target = items.find(i => i.id === id);
+    const filtered = items.filter(i => i.id !== id);
+    setItems([...filtered, target]);
+  };
 
-const moveToEnd=(id)=>{
-  const filtered=item.filter(item=>item.id!==id);
-  setItem([...filtered,item.find(item=>item.id===id)])
-}
+  if (loading) return <h1>Loading...</h1>;
 
-  },[])
   return (
     <div className='App'>
-
-      <h1>Container</h1>
+      <h1>Container </h1>
       <div className='container-wrapper'>
-        {item.map((item)=>(
-             <div key={item.id}
-             className='card'
-             style={{borderLeft:`10px ${item.color}`}}
-             >
-              <h3>{item.title}</h3>
-              <p>{item.content}</p>
-              <button onClick={()=>moveToEnd(item.id)}>Move to End</button>
-              
-            </div>
+        {items.map((item) => (
+          <div key={item.id}
+               className='card'
+               style={{ borderLeft: `10px solid ${item.color}`, margin: '10px', padding: '10px' }}
+          >
+            <h3>{item.title}</h3>
+            <p>{item.content}</p>
+            <button onClick={() => moveToEnd(item.id)}>Move to End</button>
+          </div>
         ))}
-        </div>     
+      </div>     
     </div>
-  )
+  );
 }
